@@ -1,5 +1,6 @@
-import {OP, SigningAlgo, SupportedVersion} from "@sphereon/did-auth-siop";
+import {OP, parseJWT, SigningAlgo, SupportedVersion} from "@sphereon/did-auth-siop";
 import axios from "axios";
+import {JSDOM} from "jsdom";
 
 const opKeys = {
     hexPrivateKey: 'd-GexBYTWf1d5Deia3TSooS6zEenQOr9fPmjTWkg10Q',
@@ -8,7 +9,8 @@ const opKeys = {
     alg: SigningAlgo.ES256
 }
 
-const issuer = 'http://192.168.1.140:3001/'
+//const issuer = 'http://192.168.1.140:3001/'
+const issuer = 'http://10.129.5.145:3001/'
 
 const op = OP.builder()
     .withExpiresIn(6000)
@@ -30,12 +32,15 @@ const main = async () =>
 
 
     console.log('================ Auth req dohvaćen sa /example-presentation ==============');
-    const reqUri = 'openid-vc://?request_uri=http%3A%2F%2F192.168.1.140%3A3001%2Fref';
+    const dom = new JSDOM(authReq.data);
+    const reqUri = dom.window.document.querySelector("#req-uri").textContent;
     const parsedReqURI = await op.parseAuthorizationRequestURI(reqUri);
     console.log(parsedReqURI)
     // automatski i parsa uri
     const verifiedAuthReq = await op.verifyAuthorizationRequest(reqUri)
     console.log(verifiedAuthReq.jwt)
+    const parsedJwt = parseJWT(verifiedAuthReq.jwt).payload
+    console.log(parsedJwt)
     console.log(verifiedAuthReq.presentationDefinitions)
 }
 

@@ -6,8 +6,8 @@ import {
     ResponseMode,
     ResponseType,
     RevocationVerification,
-    RP,
-    SigningAlgo,
+    RP, Scope,
+    SigningAlgo, SubjectType,
     SupportedVersion
 } from "@sphereon/did-auth-siop";
 
@@ -61,15 +61,21 @@ export const initRp = (url:string ):RP => {
         .withRevocationVerification(RevocationVerification.NEVER)
         .withSupportedVersions(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
         .withResponseType(ResponseType.ID_TOKEN)
+        //.addDidMethod("did:web")
         .withClientMetadata({
+            //clientName: undefined,
+            //clientPurpose: undefined,
+            //client_id: undefined,
+            //logo_uri: undefined,
+            subject_syntax_types_supported: ['did', 'did:web', 'did:jwk'],
             idTokenSigningAlgValuesSupported: [SigningAlgo.ES256],
             requestObjectSigningAlgValuesSupported: [SigningAlgo.ES256],
             responseTypesSupported: [ResponseType.ID_TOKEN],//TODO Vp token i gore isto zamjeni
             vpFormatsSupported: {jwt_vc: {alg: [SigningAlgo.ES256]}},
-            //scopesSupported: [Scope.OPENID_DIDAUTHN, Scope.OPENID],
-            //subjectTypesSupported: [SubjectType.PAIRWISE],
+            scopesSupported: [Scope.OPENID_DIDAUTHN, Scope.OPENID],
+            subjectTypesSupported: [SubjectType.PAIRWISE],
             subjectSyntaxTypesSupported: ['did', 'did:web', 'did:jwk'],
-            passBy: PassBy.VALUE,
+            passBy: PassBy.VALUE
             //passBy: PassBy.REFERENCE,
             //reference_uri: `${url}/ref`
         })
@@ -78,7 +84,6 @@ export const initRp = (url:string ):RP => {
             //definitionUri: `${url}/def`
         }, PropertyTarget.REQUEST_OBJECT) // valjda default radi i bez ovoga
         .withClientId(process.env.PUBLIC_KEY_DID)
-        .addDidMethod("jwk")
         //.addDidMethod("web")
         .build()
 }
