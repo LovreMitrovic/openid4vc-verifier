@@ -13,16 +13,20 @@ import {
 
 const presentationDefinition: IPresentationDefinition ={
     id: "presentation-definition-id",
+    name: "Covid passpoer manufacturer name",
+    purpose: "Identify manufacturer of covid vaccinee",
     input_descriptors: [
         {
             "id": "covid-passport-valid-pd",
             "name": "Covid passport manufacturer name",
             "purpose": "To see is covid passport manufacturer",
+            "group": ["A"],
             "constraints": {
                 "fields": [
                     {
                         "path": [
-                            "$.vc.credentialSubject.manufacturer"
+                            "$.vc.credentialSubject.manufacturer",
+                            "$.credentialSubject.manufacturer"
                         ]
                     }
                 ]

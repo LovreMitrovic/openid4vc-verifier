@@ -37,9 +37,17 @@ router.get('/ref', async (req, res) => {
     //res.send(authReq.requestObject.payload)
 })
 
-router.post('/post', (req,res) => {
+router.post('/post', async (req,res) => {
+    const rp = req.app.locals.rp as RP;
     const authRes = req.body;
+    const verifiedAuthRes = await rp.verifyAuthorizationResponse(authRes);
     console.log('/post req',authRes);
-    res.sendStatus(200);
+    if(verifiedAuthRes.nonce == "nonce" &&
+        verifiedAuthRes.state == "state"){
+        console.log(verifiedAuthRes.authorizationResponse.payload)
+        res.sendStatus(200)
+    }
+
+    res.sendStatus(400);
 })
 export default router;
