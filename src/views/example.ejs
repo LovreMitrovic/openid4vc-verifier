@@ -6,14 +6,54 @@
 </head>
 <body>
 <main>
-    <div>
-        <h1>Example presentation</h1>
-        <br>
+    <h1>Example presentation</h1>
+    <div correlationId="<%=correlationId%>" id="presentation">
         <h2>URI</h2>
         <p id="req-uri"><%=authReqUri%></p>
         <br>
         <h2>QR Code</h2>
         <img src="<%=qrCodeDataUri%>">
     </div>
+    <div id="status">
+        <h2>Status</h2>
+        <p>Status of presentation is <span id="status-text"></span></p>
+    </div>
+    <div id="passport" hidden>
+        <h2>Covid passport</h2>
+        <p>Manufacturer is <span id="passport-manufacturer"></span></p>
+        <p>Issued at <span id="passport-iat"></span></p>
+        <p>Valid until <span id="passport-exp"></span></p>
+        <p>Current valid status is <span id="passport-status"></span></p>
+    </div>
 </main>
+<script>
+    function check(){
+        let xhr = new XMLHttpRequest();
+        const correlationId = document.querySelector('#presentation').getAttribute('correlationId');
+        xhr.open('POST',`/auth-status`);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function(){
+            if (this.status !== 200){
+                console.log('Status is not 200');
+                return;
+            }
+            const response = JSON.parse(this.response);
+            console.log(response)
+            document.querySelector('#status-text').innerHTML = response.status;
+            if(response.status !== 'verified'){
+                return;
+            }
+            const {data} = response;
+            document.querySelector('#passport-iat').innerHTML = (new Date(data.iat * 1000)).toUTCString();
+            document.querySelector('#passport-exp').innerHTML = (new Date(data.exp * 1000)).toUTCString();
+            document.querySelector('#passport-status').innerHTML = new Date() < new Date(data.exp * 1000) ? 'VALID' : 'NOT VALID';
+            document.querySelector('#passport-manufacturer').innerHTML = data.manufacturer;
+
+            document.querySelector('#passport').removeAttribute("hidden");
+            document.querySelector('#presentation').setAttribute("hidden","")
+        }
+        xhr.send(JSON.stringify({correlationId}));
+    }
+    setInterval(check,1000)
+</script>
 </body>

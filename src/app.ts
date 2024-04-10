@@ -3,6 +3,7 @@ import express from 'express';
 import path from "node:path";
 import indexRouter from "./router";
 import {initRp} from "./verifier";
+import audit from 'express-requests-logger';
 dotenv.config();
 
 const externalUrl = process.env.RENDER_EXTERNAL_URL;
@@ -12,6 +13,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+//app.use(audit())
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, 'views'))
 
