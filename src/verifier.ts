@@ -55,7 +55,7 @@ export const initRp = (url:string ):RP => {
 
     return RP.builder()
         //.withRedirectUri(`${url}/redirect`)
-        .withRequestBy(PassBy.REFERENCE,`${url}/ref`)
+        .withRequestBy(PassBy.REFERENCE, `${url}/auth-req`)
         .withResponseMode(ResponseMode.POST)
         .withInternalSignature(rpKeys.hexPrivateKey, rpKeys.did, rpKeys.didKey, rpKeys.alg)
         .withSignature(rpKeys)
