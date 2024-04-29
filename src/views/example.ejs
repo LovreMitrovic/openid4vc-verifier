@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Verifier</title>
+    <link rel="stylesheet" href="/index.css">
 </head>
 <body>
 <main>
-    <h1>Presentation</h1>
+    <a href="/">
+        <header>
+            <h1>Verifier</h1>
+        </header>
+    </a>
+
     <div correlationId="<%=correlationId%>" id="presentation">
-        <h2>URI</h2>
+        <h2>Created presentation details</h2>
+        <h3>URI</h3>
         <p id="req-uri"><%=authReqUri%></p>
         <br>
-        <h2>QR Code</h2>
+        <h3>QR Code</h3>
         <img src="<%=qrCodeDataUri%>">
     </div>
     <div id="status">
-        <h2>Status</h2>
+        <h2>Status of created presentation</h2>
         <p>Status of presentation is <span id="status-text"></span></p>
     </div>
     <div id="passport" hidden>
@@ -23,7 +30,7 @@
         <p>Manufacturer is <span id="passport-manufacturer"></span></p>
         <p>Issued at <span id="passport-iat"></span></p>
         <p>Valid until <span id="passport-exp"></span></p>
-        <p>Current valid status is <span id="passport-status"></span></p>
+        <p>Current valid status is <strong><span id="passport-status"></span></strong></p>
     </div>
 </main>
 <script>
@@ -46,7 +53,14 @@
             const {data} = response;
             document.querySelector('#passport-iat').innerHTML = (new Date(data.iat * 1000)).toUTCString();
             document.querySelector('#passport-exp').innerHTML = (new Date(data.exp * 1000)).toUTCString();
-            document.querySelector('#passport-status').innerHTML = new Date() < new Date(data.exp * 1000) ? 'VALID' : 'NOT VALID';
+            const statusHtml = document.querySelector('#passport-status');
+            if(new Date() < new Date(data.exp * 1000)){
+                statusHtml.innerHTML = 'VALID';
+                statusHtml.style.color = 'green';
+            } else {
+                statusHtml.innerHTML = 'NOT VALID';
+                statusHtml.style.color = 'red';
+            }
             document.querySelector('#passport-manufacturer').innerHTML = data.manufacturer;
 
             document.querySelector('#passport').removeAttribute("hidden");

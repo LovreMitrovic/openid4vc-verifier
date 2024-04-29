@@ -8,10 +8,6 @@ import {randomBytes} from "node:crypto";
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('index')
-})
-
 router.post('/create-presentation', async (req,res) => {
     const rp = req.app.locals.rp as RP;
     const url = req.app.locals.url;
@@ -20,7 +16,7 @@ router.post('/create-presentation', async (req,res) => {
     const state: string = randomBytes(32).toString("hex");
     const authReq = await rp.createAuthorizationRequest({
         correlationId, // if there is no corrId it uses state as corrId
-        nonce,//todo can omit it will be provided automatically
+        nonce,
         state,
         responseURI: `${url}/post`,
         responseURIType: "response_uri",
@@ -54,17 +50,21 @@ router.post('/post', async (req,res) => {
     const url = req.app.locals.url;
     const authRes = req.body as AuthorizationResponsePayload;
     console.log(authRes)
-    const verifiedAuthRes = await rp.verifyAuthorizationResponse(authRes, {
-        //correlationId: 'corr-id',
-        //state: "state",
-        //nonce: "nonce",
-        presentationDefinitions: [{
-            definition: presentationDefinition,
-            location: PresentationDefinitionLocation.CLAIMS_VP_TOKEN
-        }]
-    });
-    console.log('Presented',verifiedAuthRes.authorizationResponse.payload)
-    //TODO error cases, check what to do if token expired
+    try {
+        const verifiedAuthRes = await rp.verifyAuthorizationResponse(authRes, {
+            //correlationId: 'corr-id',
+            //state: "state",
+            //nonce: "nonce",
+            presentationDefinitions: [{
+                definition: presentationDefinition,
+                location: PresentationDefinitionLocation.CLAIMS_VP_TOKEN
+            }]
+        });
+        console.log('Presented', verifiedAuthRes.authorizationResponse.payload)
+        //TODO error cases, check what to do if token expired
+    } catch (e){
+        console.error(`Error while posting presentation ${e}`);
+    }
 
     //todo check this again
     //await rp.signalAuthRequestRetrieved({correlationId:'corr-id'});
