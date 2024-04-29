@@ -27,7 +27,7 @@ router.post('/create-presentation', async (req,res) => {
     const qrCodeDataUri = await QRCode.toDataURL(authReqUri);
 
     console.log(authReq)
-    res.render('example',{authReqUri, qrCodeDataUri, correlationId});
+    res.render('example.ejs',{authReqUri, qrCodeDataUri, correlationId});
 })
 
 router.get('/auth-req', async (req, res) => {
