@@ -4,6 +4,7 @@ import path from "node:path";
 import indexRouter from "./router";
 import {initRp} from "./verifier";
 import audit from 'express-requests-logger';
+import {CapabilityUrlsManger} from "./CapabilityUrlsManger";
 dotenv.config();
 
 const externalUrl = process.env.RENDER_EXTERNAL_URL;
@@ -16,9 +17,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(audit())
 app.set('view engine','ejs');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', indexRouter);
+
+app.locals.capabilityUrlsManager = new CapabilityUrlsManger<string>();
 
 if(externalUrl){
     const hostname = '0.0.0.0';
