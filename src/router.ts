@@ -5,7 +5,7 @@ import { presentationDefinition } from "./verifier"
 import {PresentationDefinitionLocation} from "@sphereon/did-auth-siop/dist/authorization-response/types";
 import {decodeJwt} from "jose";
 import {randomBytes} from "node:crypto";
-import {CapabilityUrlsManger} from "./capabilityUrlsManger";
+import {CapabilityUrlsManger} from "./CapabilityUrlsManger";
 
 const router = express.Router();
 
