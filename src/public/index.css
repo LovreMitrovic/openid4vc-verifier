@@ -41,3 +41,7 @@ a:has(header), a:has(header):visited, a:has(header):hover, a:has(header):active 
     text-decoration: none;
     color: inherit;
 }
+
+pre {
+    overflow: auto;
+}

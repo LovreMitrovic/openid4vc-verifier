@@ -105,9 +105,11 @@ router.post('/auth-status', async (req,res) => {
     }
 
     //app specific
-    const vpToken = decodeJwt(authResState.response.payload.vp_token.toString());
-    const idToken= decodeJwt(authResState.response.payload.id_token.toString());
-    const credential = decodeJwt(vpToken['vp']['verifiableCredential'][0])
+    const vpToken = authResState.response.payload.vp_token.toString();
+    const vpTokenPayload = decodeJwt(vpToken);
+    const idToken = authResState.response.payload.id_token.toString();
+    const idTokenPayload= decodeJwt(idToken);
+    const credential = decodeJwt(vpTokenPayload['vp']['verifiableCredential'][0])
 
     if(authResState.status !== 'verified'){
         res.json(authResState)
@@ -119,6 +121,6 @@ router.post('/auth-status', async (req,res) => {
         exp: credential.exp,
         manufacturer: credential['vc']['credentialSubject']['manufacturer']
     }
-    res.json({...authResState, data})
+    res.json({...authResState, data, vpTokenPayload, idTokenPayload, vpToken, idToken})
 })
 export default router;

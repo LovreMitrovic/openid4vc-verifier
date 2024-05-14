@@ -15,15 +15,16 @@
 
     <div correlationId="<%=correlationId%>" id="presentation">
         <h2>Created presentation details</h2>
-        <h3>URI</h3>
-        <p id="req-uri"><%=authReqUri%></p>
-        <br>
         <h3>QR Code</h3>
         <img src="<%=qrCodeDataUri%>">
+        <p><a href="<%=authReqUri%>">Open from wallet</a></p>
+
+        <h3>URI</h3>
+        <p id="req-uri"><%=authReqUri%></p>
     </div>
     <div id="status">
         <h2>Status of created presentation</h2>
-        <p>Status of presentation is <span id="status-text"></span></p>
+        <p>Status of presentation is <strong><span id="status-text"></span></strong></p>
     </div>
     <div id="passport" hidden>
         <h2>Covid passport</h2>
@@ -31,9 +32,17 @@
         <p>Issued at <span id="passport-iat"></span></p>
         <p>Valid until <span id="passport-exp"></span></p>
         <p>Current valid status is <strong><span id="passport-status"></span></strong></p>
+
+        <br>
+        <p>Verifier has id token with payload</p>
+        <pre id="id-token"></pre>
+        <p>Verifier has vp token with payload</p>
+        <pre id="vp-token"></pre>
     </div>
 </main>
 <script>
+    let idToken;
+    let vpToken;
     function check(){
         let xhr = new XMLHttpRequest();
         const correlationId = document.querySelector('#presentation').getAttribute('correlationId');
@@ -62,6 +71,10 @@
                 statusHtml.style.color = 'red';
             }
             document.querySelector('#passport-manufacturer').innerHTML = data.manufacturer;
+            document.querySelector('#vp-token').innerHTML = JSON.stringify(response.vpTokenPayload, null, 2);
+            document.querySelector('#id-token').innerHTML = JSON.stringify(response.idTokenPayload, null, 2);
+            vpToken = response.vpToken;
+            idToken = response.idToken;
 
             document.querySelector('#passport').removeAttribute("hidden");
             document.querySelector('#presentation').setAttribute("hidden","")
