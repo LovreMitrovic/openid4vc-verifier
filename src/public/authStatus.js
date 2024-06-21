@@ -1,7 +1,34 @@
 let idToken;
 let vpToken;
+let intervals = [];
+function showAuthReqObj(){
+    const xhr = new XMLHttpRequest();
+    const uri = document.querySelector('#req-uri').innerHTML;
+    const uriDecoded = decodeURIComponent(uri);
+    const params = {};
+    for(let param of uriDecoded.split('?')[1].split('&')){
+        console.log(param)
+        const key = param.split('=')[0];
+        const value = param.split('=')[1];
+        params[key] = value;
+    }
+    console.log(params);
+    xhr.open('GET',params['request_uri']);
+    xhr.onload = function(){
+        const token = this.response;
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayloadString = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        const parsed = JSON.parse(jsonPayloadString);
+        document.querySelector('#authReqObj').innerHTML = JSON.stringify(parsed, null, 2);
+    }
+    xhr.send();
+}
+
 function check(){
-    let xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     const correlationId = document.querySelector('#presentation').getAttribute('correlationId');
     xhr.open('POST',`/auth-status`);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -38,4 +65,5 @@ function check(){
     }
     xhr.send(JSON.stringify({correlationId}));
 }
-setInterval(check,1000)
+intervals.push(setInterval(check,1000));
+showAuthReqObj();
