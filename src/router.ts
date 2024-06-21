@@ -117,7 +117,7 @@ router.post('/auth-status', async (req,res) => {
     }
 
     const data = {
-        iat: credential.iat,
+        nbf: credential.nbf,
         exp: credential.exp,
         manufacturer: credential['vc']['credentialSubject']['manufacturer']
     }
