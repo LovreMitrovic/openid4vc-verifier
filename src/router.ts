@@ -121,6 +121,6 @@ router.post('/auth-status', async (req,res) => {
         exp: credential.exp,
         manufacturer: credential['vc']['credentialSubject']['manufacturer']
     }
-    res.json({...authResState, data, vpTokenPayload, idTokenPayload, vpToken, idToken})
+    res.json({...authResState, data, vpTokenPayload, vpToken, idTokenPayload, idToken})
 })
 export default router;

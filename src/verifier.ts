@@ -27,7 +27,6 @@ export const presentationDefinition: IPresentationDefinition ={
             "id": "covid-passport-valid-pd",
             "name": "Covid passport manufacturer name",
             "purpose": "To see is covid passport manufacturer",
-            "group": ["A"],
             "constraints": {
                 "fields": [
                     {
