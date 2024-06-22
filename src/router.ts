@@ -1,8 +1,8 @@
 import express from 'express';
-import {createPresentation} from "./routes/createPresentation.routes";
-import {authRequest} from "./routes/authReq.routes";
-import {submitPresentation} from "./routes/submitPresentation.routes";
-import {authStatus} from "./routes/authStatus.routes";
+import {createPresentation} from "./controllers/createPresentation.routes";
+import {authRequest} from "./controllers/authReq.routes";
+import {submitPresentation} from "./controllers/submitPresentation.routes";
+import {authStatus} from "./controllers/authStatus.routes";
 
 const router = express.Router();
 
