@@ -1,12 +1,12 @@
 import express from 'express';
-import {createPresentation} from "./controllers/createPresentation.controller";
+import {createAuthReq} from "./controllers/createAuthReq.controller";
 import {authRequest} from "./controllers/authReq.controller";
 import {submitPresentation} from "./controllers/submitPresentation.contoller";
 import {authStatus} from "./controllers/authStatus.controller";
 
 const router = express.Router();
 
-router.post('/create-presentation', createPresentation);
+router.post('/create-auth-req', createAuthReq);
 
 //this url should expire and aybe use something else instead of corrId https://www.rfc-editor.org/rfc/rfc9101.html
 /*

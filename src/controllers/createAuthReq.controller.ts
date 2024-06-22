@@ -3,7 +3,7 @@ import {CapabilityUrlsManger} from "../utils/CapabilityUrlsManger";
 import {randomBytes} from "node:crypto";
 import QRCode from "qrcode";
 
-export const createPresentation = async (req,res) => {
+export const createAuthReq = async (req, res) => {
     const rp = req.app.locals.rp as RP;
     const url = req.app.locals.url;
     const capabilityUrlsManager = req.app.locals.capabilityUrlsManager as CapabilityUrlsManger<string>;
