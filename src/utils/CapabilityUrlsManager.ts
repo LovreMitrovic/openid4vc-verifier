@@ -3,7 +3,7 @@ type CapabilityUrlManagerItem<Type> = {
     item: Type
 };
 
-export class CapabilityUrlsManger<Type>{
+export class CapabilityUrlsManager<Type>{
     map: Map<string, CapabilityUrlManagerItem<Type>>
     expiresIn: number;
 

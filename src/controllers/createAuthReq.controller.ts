@@ -1,12 +1,12 @@
 import {RP, SupportedVersion} from "@sphereon/did-auth-siop";
-import {CapabilityUrlsManger} from "../utils/CapabilityUrlsManger";
+import {CapabilityUrlsManager} from "../utils/CapabilityUrlsManager";
 import {randomBytes} from "node:crypto";
 import QRCode from "qrcode";
 
 export const createAuthReq = async (req, res) => {
     const rp = req.app.locals.rp as RP;
     const url = req.app.locals.url;
-    const capabilityUrlsManager = req.app.locals.capabilityUrlsManager as CapabilityUrlsManger<string>;
+    const capabilityUrlsManager = req.app.locals.capabilityUrlsManager as CapabilityUrlsManager<string>;
     const correlationId: string = randomBytes(32).toString("hex");
     const nonce: string = randomBytes(32).toString("hex");
     const state: string = randomBytes(32).toString("hex");

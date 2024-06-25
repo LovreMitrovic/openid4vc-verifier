@@ -3,7 +3,7 @@ import express from 'express';
 import path from "node:path";
 import indexRouter from "./router";
 import {initRp} from "./services/verifier";
-import {CapabilityUrlsManger} from "./utils/CapabilityUrlsManger";
+import {CapabilityUrlsManager} from "./utils/CapabilityUrlsManager";
 dotenv.config();
 
 const externalUrl = process.env.RENDER_EXTERNAL_URL;
@@ -19,7 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', indexRouter);
 
-app.locals.capabilityUrlsManager = new CapabilityUrlsManger<string>();
+app.locals.capabilityUrlsManager = new CapabilityUrlsManager<string>();
 
 if(externalUrl){
     const hostname = '0.0.0.0';

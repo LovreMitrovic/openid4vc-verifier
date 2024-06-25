@@ -1,9 +1,9 @@
 import {RP} from "@sphereon/did-auth-siop";
-import {CapabilityUrlsManger} from "../utils/CapabilityUrlsManger";
+import {CapabilityUrlsManager} from "../utils/CapabilityUrlsManager";
 
 export const authRequest = async (req, res) => {
     const rp = req.app.locals.rp as RP;
-    const capabilityUrlsManager = req.app.locals.capabilityUrlsManager as CapabilityUrlsManger<string>;
+    const capabilityUrlsManager = req.app.locals.capabilityUrlsManager as CapabilityUrlsManager<string>;
     const reference = req.params.reference;
 
     const correlationId = capabilityUrlsManager.get(reference);
